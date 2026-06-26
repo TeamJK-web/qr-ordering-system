@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn -version)",
+      "Bash(mvn spring-boot:run -q)",
+      "Bash(curl -s http://localhost:8080/api/menu)",
+      "Bash(mvn package *)",
+      "Bash(Start-Process java *)",
+      "Bash(netstat -ano)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 8080 -ErrorAction SilentlyContinue)",
+      "Bash(taskkill //F //IM java.exe)"
+    ]
+  }
+}

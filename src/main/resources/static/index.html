@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>🍴 Our Menu</h1>
+        <p class="tagline">Fresh. Delicious. Made with love.</p>
+    </div>
+</header>
+
+<div class="category-nav" id="categoryNav"></div>
+
+<main id="menuContainer"></main>
+
+<!-- Floating Cart Button -->
+<button class="cart-btn" id="cartBtn" onclick="openCart()">
+    🛒 <span id="cartCount">0</span> items &nbsp;|&nbsp; ₱<span id="cartTotal">0.00</span>
+</button>
+
+<!-- Cart Modal -->
+<div class="modal-overlay" id="cartModal" onclick="closeCartOutside(event)">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Your Order</h2>
+            <button class="close-btn" onclick="closeCart()">✕</button>
+        </div>
+        <div class="modal-body" id="cartItems">
+            <p class="empty-cart">Your cart is empty.</p>
+        </div>
+        <div class="modal-footer">
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span id="modalSubtotal">₱0.00</span>
+            </div>
+            <div class="total-row tax-row">
+                <span>Service Charge (10%)</span>
+                <span id="modalTax">₱0.00</span>
+            </div>
+            <div class="total-row grand-total-row">
+                <span>Total Bill</span>
+                <span id="modalTotal">₱0.00</span>
+            </div>
+            <button class="order-btn" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
+            <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+        </div>
+    </div>
+</div>
+
+<!-- Order Success Modal -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal success-modal">
+        <div class="success-icon">✅</div>
+        <h2>Order Placed!</h2>
+        <p>Your order has been received. We'll have it ready for you shortly!</p>
+        <div class="order-summary" id="orderSummary"></div>
+        <button class="order-btn" onclick="closeSuccess()">Done</button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

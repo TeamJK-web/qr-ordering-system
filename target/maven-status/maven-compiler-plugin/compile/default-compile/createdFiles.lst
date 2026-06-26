@@ -1,0 +1,5 @@
+com\restaurant\ordering\model\MenuItem.class
+com\restaurant\ordering\service\MenuService.class
+com\restaurant\ordering\controller\MenuController.class
+com\restaurant\ordering\controller\QRController.class
+com\restaurant\ordering\OrderingApplication.class

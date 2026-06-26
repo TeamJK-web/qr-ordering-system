@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: restaurant-qr-ordering
+    env: java
+    plan: free
+    buildCommand: mvn package -DskipTests
+    startCommand: java -jar target/qr-ordering-system-1.0.0.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
