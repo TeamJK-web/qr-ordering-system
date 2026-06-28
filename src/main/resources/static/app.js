@@ -162,17 +162,32 @@ function clearCart() {
     renderCartItems();
 }
 
-function placeOrder() {
+async function placeOrder() {
     if (getCartCount() === 0) return;
 
+    const tableNumber = document.getElementById('tableNumberInput').value.trim() || '—';
     const subtotal = getCartTotal();
     const tax = subtotal * 0.10;
     const total = subtotal + tax;
 
-    const summaryLines = Object.entries(cart).map(([id, qty]) => {
+    const items = Object.entries(cart).map(([id, qty]) => {
         const item = menuItems.find(i => i.id === parseInt(id));
-        return `<div>${item.emoji} ${item.name} x${qty} — ₱${(item.price * qty).toFixed(2)}</div>`;
-    }).join('');
+        return { name: item.name, emoji: item.emoji, quantity: qty, price: item.price };
+    });
+
+    try {
+        await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tableNumber, items })
+        });
+    } catch (e) {
+        console.error('Failed to send order to kitchen:', e);
+    }
+
+    const summaryLines = items.map(item =>
+        `<div>${item.emoji} ${item.name} x${item.quantity} — ₱${(item.price * item.quantity).toFixed(2)}</div>`
+    ).join('');
 
     document.getElementById('orderSummary').innerHTML = `
         ${summaryLines}
@@ -184,6 +199,7 @@ function placeOrder() {
     document.getElementById('successModal').classList.add('open');
 
     cart = {};
+    document.getElementById('tableNumberInput').value = '';
     renderMenu();
     updateCartButton();
 }

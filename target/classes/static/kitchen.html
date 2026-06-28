@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Display</title>
+    <link rel="stylesheet" href="kitchen.css">
+</head>
+<body>
+
+<header>
+    <h1>👨‍🍳 Kitchen Display</h1>
+    <div class="status" id="status">
+        <span class="dot"></span> Live
+    </div>
+</header>
+
+<div class="empty-state" id="emptyState">
+    <div class="empty-icon">🍽️</div>
+    <p>No pending orders</p>
+    <small>New orders will appear here automatically</small>
+</div>
+
+<div class="orders-grid" id="ordersGrid"></div>
+
+<script src="kitchen.js"></script>
+</body>
+</html>

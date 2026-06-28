@@ -304,6 +304,36 @@ main {
     border-top: 1px solid #eee;
 }
 
+.table-number-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    background: #fdf0ee;
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.table-number-row label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #c0392b;
+    white-space: nowrap;
+}
+
+.table-number-row input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.table-number-row input:focus {
+    border-color: #e74c3c;
+}
+
 .total-row {
     display: flex;
     justify-content: space-between;
