@@ -226,12 +226,13 @@ function orderIds() { try { return JSON.parse(localStorage.getItem(orderStorageK
 function rememberOrder(id) { const ids = [...new Set([...orderIds(), id])]; localStorage.setItem(orderStorageKey, JSON.stringify(ids)); refreshMyOrders(); }
 async function refreshMyOrders() {
     const ids = orderIds();
-    if (!ids.length) return;
+    if (!ids.length) {
+        document.getElementById('myOrdersList').innerHTML = 'No orders from this device yet.';
+        return;
+    }
     const results = await Promise.all(ids.map(id => fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders/${id}`).then(r => r.ok ? r.json() : null)));
     const orders = results.filter(Boolean);
-    const container = document.getElementById('myOrders');
-    container.style.display = orders.length ? 'block' : 'none';
-    document.getElementById('myOrdersList').innerHTML = orders.map(order => `<div style="background:white;border:1px solid #eee;border-radius:8px;padding:12px;margin:8px 0"><strong>Order #${order.id}</strong> · <strong>${order.status}</strong><br>${order.items.map(item => `${item.emoji} ${item.name} × ${item.quantity}`).join(', ')}<br><span style="color:#c0392b">Total: ₱${Number(order.total).toFixed(2)}</span></div>`).join('');
+    document.getElementById('myOrdersList').innerHTML = orders.length ? orders.map(order => `<div style="background:white;border:1px solid #eee;border-radius:8px;padding:12px;margin:8px 0"><strong>Order #${order.id}</strong> · <strong>${order.status}</strong><br>${order.items.map(item => `${item.emoji} ${item.name} × ${item.quantity}`).join(', ')}<br><span style="color:#c0392b">Total: ₱${Number(order.total).toFixed(2)}</span></div>`).join('') : 'No saved orders were found.';
 }
 refreshMyOrders();
 setInterval(refreshMyOrders, 15000);
