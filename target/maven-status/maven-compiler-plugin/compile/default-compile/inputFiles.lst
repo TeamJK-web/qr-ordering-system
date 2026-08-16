@@ -12,8 +12,10 @@ C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\controller\AdminController.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\service\OrderService.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\dto\EmployeeRequest.java
+C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\dto\DiningTableRequest.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\model\OrderItem.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\OrderingApplication.java
+C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\model\DiningTable.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\controller\QRController.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\dto\MenuItemRequest.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\repository\EmployeeRepository.java
@@ -22,4 +24,5 @@ C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\dto\PaymentRequest.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\repository\MenuItemRepository.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\dto\DashboardSummary.java
+C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\repository\DiningTableRepository.java
 C:\01-Jojo\07-Java\QR Code Ordering System\src\main\java\com\restaurant\ordering\service\AdminService.java

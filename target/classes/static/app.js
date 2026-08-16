@@ -1,6 +1,7 @@
 let menuItems = [];
 let cart = {}; // { itemId: quantity }
 const restaurantSlug = new URLSearchParams(window.location.search).get('restaurant') || 'demo';
+const qrTable = new URLSearchParams(window.location.search).get('table');
 
 async function loadMenu() {
     try {
@@ -210,4 +211,9 @@ function closeSuccess() {
     document.getElementById('successModal').classList.remove('open');
 }
 
+if (qrTable) {
+    const tableInput = document.getElementById('tableNumberInput');
+    tableInput.value = qrTable;
+    tableInput.readOnly = true;
+}
 loadMenu();

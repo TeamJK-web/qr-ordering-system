@@ -27,8 +27,8 @@ public class QRController {
     private String publicUrl;
 
     @GetMapping(value = "/api/qr", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] generateQR(@RequestParam(defaultValue = "demo") String restaurant) throws WriterException, IOException {
-        String menuUrl = resolveMenuUrl(restaurant);
+    public byte[] generateQR(@RequestParam(defaultValue = "demo") String restaurant, @RequestParam(required = false) String table) throws WriterException, IOException {
+        String menuUrl = resolveMenuUrl(restaurant) + (table == null || table.isBlank() ? "" : "&table=" + java.net.URLEncoder.encode(table, java.nio.charset.StandardCharsets.UTF_8));
 
         QRCodeWriter writer = new QRCodeWriter();
         BitMatrix matrix = writer.encode(menuUrl, BarcodeFormat.QR_CODE, 300, 300);
