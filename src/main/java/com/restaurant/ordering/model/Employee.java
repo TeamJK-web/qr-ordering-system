@@ -13,5 +13,6 @@ public class Employee {
     public enum Role { ADMIN, CASHIER, KITCHEN }
     protected Employee() {}
     public Employee(Restaurant restaurant, String name, Role role, String pinHash) { this.restaurant=restaurant; this.name=name; this.role=role; this.pinHash=pinHash; }
+    public void update(String name, Role role, String pinHash) { this.name=name; this.role=role; if(pinHash!=null&&!pinHash.isBlank()) this.pinHash=pinHash; }
     public Long getId(){return id;} public String getName(){return name;} public Role getRole(){return role;}
 }

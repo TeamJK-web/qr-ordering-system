@@ -1,0 +1,8 @@
+package com.restaurant.ordering.controller;
+import com.restaurant.ordering.dto.*;
+import com.restaurant.ordering.model.*;
+import com.restaurant.ordering.service.AdminService;
+import org.springframework.web.bind.annotation.*;
+import java.util.*;
+@RestController @RequestMapping("/api/restaurants/{restaurantSlug}/admin") @CrossOrigin
+public class AdminController { private final AdminService service; public AdminController(AdminService service){this.service=service;} @GetMapping("/summary") public DashboardSummary summary(@PathVariable String restaurantSlug){return service.summary(restaurantSlug);}@GetMapping("/orders") public List<Order> orders(@PathVariable String restaurantSlug){return service.orders(restaurantSlug);}@GetMapping("/menu") public List<MenuItem> menu(@PathVariable String restaurantSlug){return service.menu(restaurantSlug);}@PostMapping("/menu") public MenuItem createMenu(@PathVariable String restaurantSlug,@RequestBody MenuItemRequest request){return service.createMenuItem(restaurantSlug,request);}@PutMapping("/menu/{id}") public MenuItem updateMenu(@PathVariable String restaurantSlug,@PathVariable Long id,@RequestBody MenuItemRequest request){return service.updateMenuItem(restaurantSlug,id,request);}@GetMapping("/employees") public List<Employee> employees(@PathVariable String restaurantSlug){return service.employees(restaurantSlug);}@PostMapping("/employees") public Employee createEmployee(@PathVariable String restaurantSlug,@RequestBody EmployeeRequest request){return service.createEmployee(restaurantSlug,request);}@PutMapping("/employees/{id}") public Employee updateEmployee(@PathVariable String restaurantSlug,@PathVariable Long id,@RequestBody EmployeeRequest request){return service.updateEmployee(restaurantSlug,id,request);} }

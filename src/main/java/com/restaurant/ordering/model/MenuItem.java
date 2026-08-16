@@ -15,5 +15,6 @@ public class MenuItem {
     @Column(nullable = false) private boolean available = true;
     protected MenuItem() {}
     public MenuItem(Restaurant restaurant, String name, String description, BigDecimal price, String category, String emoji) { this.restaurant=restaurant; this.name=name; this.description=description; this.price=price; this.category=category; this.emoji=emoji; }
+    public void update(String name, String description, BigDecimal price, String category, String emoji, boolean available) { this.name=name; this.description=description; this.price=price; this.category=category; this.emoji=emoji; this.available=available; }
     public Long getId(){return id;} public String getName(){return name;} public String getDescription(){return description;} public BigDecimal getPrice(){return price;} public String getCategory(){return category;} public String getEmoji(){return emoji;} public boolean isAvailable(){return available;}
 }
