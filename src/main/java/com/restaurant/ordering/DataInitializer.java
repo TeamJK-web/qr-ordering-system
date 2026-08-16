@@ -1,0 +1,7 @@
+package com.restaurant.ordering;
+import com.restaurant.ordering.model.*;
+import com.restaurant.ordering.repository.*;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.*;
+import java.math.BigDecimal;
+@Configuration class DataInitializer { @Bean CommandLineRunner seedData(RestaurantRepository restaurants,MenuItemRepository menuItems,EmployeeRepository employees){return args->{if(restaurants.count()>0)return;Restaurant r=restaurants.save(new Restaurant("Demo Restaurant","demo"));employees.save(new Employee(r,"Demo Cashier",Employee.Role.CASHIER,"CHANGE_ME"));employees.save(new Employee(r,"Demo Kitchen",Employee.Role.KITCHEN,"CHANGE_ME"));menuItems.save(new MenuItem(r,"Spring Rolls","Crispy vegetable spring rolls with sweet chili sauce",new BigDecimal("120.00"),"Appetizers","🥟"));menuItems.save(new MenuItem(r,"Chicken Wings","Six buffalo wings with ranch dip",new BigDecimal("185.00"),"Appetizers","🍗"));menuItems.save(new MenuItem(r,"Grilled Chicken","Marinated chicken with rice and vegetables",new BigDecimal("280.00"),"Main Course","🍽️"));menuItems.save(new MenuItem(r,"Beef Steak","Tenderloin steak with mushroom gravy",new BigDecimal("450.00"),"Main Course","🥩"));menuItems.save(new MenuItem(r,"Pork Sinigang","Pork ribs in tamarind broth",new BigDecimal("245.00"),"Main Course","🍜"));menuItems.save(new MenuItem(r,"Mango Juice","Fresh mango juice",new BigDecimal("80.00"),"Beverages","🥭"));menuItems.save(new MenuItem(r,"Iced Tea","Sweetened black tea with lemon",new BigDecimal("65.00"),"Beverages","🧋"));};} }

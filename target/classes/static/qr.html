@@ -68,17 +68,17 @@
     <h1>🍴 Scan to Order</h1>
     <p>Show this QR code to your customers</p>
     <div class="qr-frame">
-        <img src="/api/qr" alt="QR Code" id="qrImg">
+        <img src="/api/qr?restaurant=demo" alt="QR Code" id="qrImg">
     </div>
     <div class="url-box" id="menuUrl">Loading...</div>
     <div class="instruction">
         Customers can scan this QR code with their smartphone camera<br>
         to view your menu and place an order.
     </div>
-    <a class="download-btn" href="/api/qr" download="restaurant-qr.png">Download QR Code</a>
+    <a class="download-btn" href="/api/qr?restaurant=demo" download="restaurant-qr.png">Download QR Code</a>
 </div>
 <script>
-    fetch('/api/server-url')
+    fetch('/api/server-url?restaurant=demo')
         .then(r => r.text())
         .then(url => {
             document.getElementById('menuUrl').textContent = url;

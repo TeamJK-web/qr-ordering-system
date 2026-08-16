@@ -1,9 +1,10 @@
 let menuItems = [];
 let cart = {}; // { itemId: quantity }
+const restaurantSlug = new URLSearchParams(window.location.search).get('restaurant') || 'demo';
 
 async function loadMenu() {
     try {
-        const res = await fetch('/api/menu');
+        const res = await fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/menu`);
         menuItems = await res.json();
         renderCategoryNav();
         renderMenu();
@@ -172,14 +173,15 @@ async function placeOrder() {
 
     const items = Object.entries(cart).map(([id, qty]) => {
         const item = menuItems.find(i => i.id === parseInt(id));
-        return { name: item.name, emoji: item.emoji, quantity: qty, price: item.price };
+        return { ...item, quantity: qty };
     });
+    const orderItems = items.map(item => ({ menuItemId: item.id, quantity: item.quantity }));
 
     try {
-        await fetch('/api/orders', {
+        await fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tableNumber, items })
+            body: JSON.stringify({ tableNumber, items: orderItems })
         });
     } catch (e) {
         console.error('Failed to send order to kitchen:', e);

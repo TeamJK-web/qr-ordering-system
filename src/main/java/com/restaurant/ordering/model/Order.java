@@ -1,46 +1,26 @@
 package com.restaurant.ordering.model;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.*;
 
+@Entity @Table(name = "orders")
 public class Order {
-    private int id;
-    private String tableNumber;
-    private List<OrderItem> items;
-    private String status;
-    private String placedAt;
-    private double subtotal;
-    private double serviceCharge;
-    private double total;
-
-    public Order() {}
-
-    public Order(int id, String tableNumber, List<OrderItem> items) {
-        this.id = id;
-        this.tableNumber = tableNumber;
-        this.items = items;
-        this.status = "PENDING";
-        this.placedAt = LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm a"));
-        this.subtotal = items.stream().mapToDouble(OrderItem::getSubtotal).sum();
-        this.serviceCharge = this.subtotal * 0.10;
-        this.total = this.subtotal + this.serviceCharge;
-    }
-
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getTableNumber() { return tableNumber; }
-    public void setTableNumber(String tableNumber) { this.tableNumber = tableNumber; }
-    public List<OrderItem> getItems() { return items; }
-    public void setItems(List<OrderItem> items) { this.items = items; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-    public String getPlacedAt() { return placedAt; }
-    public void setPlacedAt(String placedAt) { this.placedAt = placedAt; }
-    public double getSubtotal() { return subtotal; }
-    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
-    public double getServiceCharge() { return serviceCharge; }
-    public void setServiceCharge(double serviceCharge) { this.serviceCharge = serviceCharge; }
-    public double getTotal() { return total; }
-    public void setTotal(double total) { this.total = total; }
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @ManyToOne(optional = false) @JoinColumn(name = "restaurant_id") private Restaurant restaurant;
+    @Column(nullable = false, length = 20) private String tableNumber;
+    @Enumerated(EnumType.STRING) @Column(nullable = false) private Status status = Status.PENDING;
+    @Column(nullable = false) private LocalDateTime placedAt = LocalDateTime.now();
+    @Column(nullable = false, precision = 12, scale = 2) private BigDecimal subtotal;
+    @Column(nullable = false, precision = 12, scale = 2) private BigDecimal serviceCharge;
+    @Column(nullable = false, precision = 12, scale = 2) private BigDecimal total;
+    @ManyToOne @JoinColumn(name = "prepared_by_employee_id") private Employee preparedBy;
+    @JsonManagedReference @OneToMany(mappedBy="order", cascade=CascadeType.ALL, orphanRemoval=true) private List<OrderItem> items = new ArrayList<>();
+    public enum Status { PENDING, PREPARING, READY, PAID, CANCELLED }
+    protected Order() {}
+    public Order(Restaurant restaurant, String tableNumber, BigDecimal subtotal, BigDecimal serviceCharge) { this.restaurant=restaurant; this.tableNumber=tableNumber; this.subtotal=subtotal; this.serviceCharge=serviceCharge; this.total=subtotal.add(serviceCharge); }
+    public void addItem(OrderItem item){items.add(item);} public void markReady(Employee employee){status=Status.READY; preparedBy=employee;} public void markPaid(){status=Status.PAID;}
+    public Long getId(){return id;} public String getTableNumber(){return tableNumber;} public Status getStatus(){return status;} public LocalDateTime getPlacedAt(){return placedAt;} public BigDecimal getSubtotal(){return subtotal;} public BigDecimal getServiceCharge(){return serviceCharge;} public BigDecimal getTotal(){return total;} public List<OrderItem> getItems(){return items;} public Employee getPreparedBy(){return preparedBy;}
 }

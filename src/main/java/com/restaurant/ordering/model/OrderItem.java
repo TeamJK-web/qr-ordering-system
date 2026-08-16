@@ -1,30 +1,19 @@
 package com.restaurant.ordering.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+
+@Entity @Table(name="order_items")
 public class OrderItem {
-    private String name;
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
+    @JsonBackReference @ManyToOne(optional=false) @JoinColumn(name="order_id") private Order order;
+    @Column(nullable=false) private String name;
     private String emoji;
-    private int quantity;
-    private double price;
-    private double subtotal;
-
-    public OrderItem() {}
-
-    public OrderItem(String name, String emoji, int quantity, double price) {
-        this.name = name;
-        this.emoji = emoji;
-        this.quantity = quantity;
-        this.price = price;
-        this.subtotal = price * quantity;
-    }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getEmoji() { return emoji; }
-    public void setEmoji(String emoji) { this.emoji = emoji; }
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-    public double getSubtotal() { return subtotal; }
-    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
+    @Column(nullable=false) private int quantity;
+    @Column(nullable=false,precision=12,scale=2) private BigDecimal price;
+    @Column(nullable=false,precision=12,scale=2) private BigDecimal subtotal;
+    protected OrderItem() {}
+    public OrderItem(Order order, MenuItem menuItem, int quantity) { this.order=order; name=menuItem.getName(); emoji=menuItem.getEmoji(); this.quantity=quantity; price=menuItem.getPrice(); subtotal=price.multiply(BigDecimal.valueOf(quantity)); }
+    public String getName(){return name;} public String getEmoji(){return emoji;} public int getQuantity(){return quantity;} public BigDecimal getPrice(){return price;} public BigDecimal getSubtotal(){return subtotal;}
 }

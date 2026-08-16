@@ -1,8 +1,9 @@
 let orders = {};
+const restaurantSlug = new URLSearchParams(window.location.search).get('restaurant') || 'demo';
 
 async function loadExistingOrders() {
     try {
-        const res = await fetch('/api/orders');
+        const res = await fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders`);
         const list = await res.json();
         list.forEach(order => addOrderCard(order));
         updateEmptyState();
@@ -12,7 +13,7 @@ async function loadExistingOrders() {
 }
 
 function connectStream() {
-    const es = new EventSource('/api/orders/stream');
+    const es = new EventSource(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders/stream`);
     const statusEl = document.getElementById('status');
 
     es.onopen = () => {
@@ -84,7 +85,7 @@ function removeOrderCard(id) {
 
 async function markDone(id) {
     try {
-        await fetch('/api/orders/' + id + '/done', { method: 'PATCH' });
+        await fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders/${id}/done`, { method: 'PATCH' });
         removeOrderCard(id);
         updateEmptyState();
     } catch (e) {
