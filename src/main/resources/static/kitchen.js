@@ -5,6 +5,8 @@ async function loadExistingOrders() {
     try {
         const res = await fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders`);
         const list = await res.json();
+        const activeIds = new Set(list.map(order => order.id));
+        Object.keys(orders).forEach(id => { if (!activeIds.has(Number(id))) removeOrderCard(Number(id)); });
         list.forEach(order => addOrderCard(order));
         updateEmptyState();
     } catch (e) {
@@ -116,3 +118,4 @@ function playAlert() {
 
 loadExistingOrders();
 connectStream();
+setInterval(loadExistingOrders, 10000);

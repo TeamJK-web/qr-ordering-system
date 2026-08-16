@@ -21,6 +21,7 @@ com\restaurant\ordering\dto\DashboardSummary.class
 com\restaurant\ordering\dto\DiningTableRequest.class
 com\restaurant\ordering\service\MenuService.class
 com\restaurant\ordering\repository\MenuItemRepository.class
+com\restaurant\ordering\dto\DailySales.class
 com\restaurant\ordering\dto\PlaceOrderRequest$Item.class
 com\restaurant\ordering\model\Employee$Role.class
 com\restaurant\ordering\model\MenuItem.class

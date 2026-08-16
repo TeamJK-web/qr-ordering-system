@@ -2,6 +2,7 @@ let menuItems = [];
 let cart = {}; // { itemId: quantity }
 const restaurantSlug = new URLSearchParams(window.location.search).get('restaurant') || 'demo';
 const qrTable = new URLSearchParams(window.location.search).get('table');
+const orderStorageKey = `customer-orders:${restaurantSlug}:${qrTable || 'manual'}`;
 
 async function loadMenu() {
     try {
@@ -179,13 +180,18 @@ async function placeOrder() {
     const orderItems = items.map(item => ({ menuItemId: item.id, quantity: item.quantity }));
 
     try {
-        await fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders`, {
+        const res = await fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ tableNumber, items: orderItems })
         });
+        if (!res.ok) throw new Error(await res.text());
+        const placedOrder = await res.json();
+        rememberOrder(placedOrder.id);
     } catch (e) {
         console.error('Failed to send order to kitchen:', e);
+        alert('Unable to place the order. Please check the table and try again.');
+        return;
     }
 
     const summaryLines = items.map(item =>
@@ -202,7 +208,7 @@ async function placeOrder() {
     document.getElementById('successModal').classList.add('open');
 
     cart = {};
-    document.getElementById('tableNumberInput').value = '';
+    document.getElementById('tableNumberInput').value = qrTable || '';
     renderMenu();
     updateCartButton();
 }
@@ -216,4 +222,17 @@ if (qrTable) {
     tableInput.value = qrTable;
     tableInput.readOnly = true;
 }
+function orderIds() { try { return JSON.parse(localStorage.getItem(orderStorageKey) || '[]'); } catch { return []; } }
+function rememberOrder(id) { const ids = [...new Set([...orderIds(), id])]; localStorage.setItem(orderStorageKey, JSON.stringify(ids)); refreshMyOrders(); }
+async function refreshMyOrders() {
+    const ids = orderIds();
+    if (!ids.length) return;
+    const results = await Promise.all(ids.map(id => fetch(`/api/restaurants/${encodeURIComponent(restaurantSlug)}/orders/${id}`).then(r => r.ok ? r.json() : null)));
+    const orders = results.filter(Boolean);
+    const container = document.getElementById('myOrders');
+    container.style.display = orders.length ? 'block' : 'none';
+    document.getElementById('myOrdersList').innerHTML = orders.map(order => `<div style="background:white;border:1px solid #eee;border-radius:8px;padding:12px;margin:8px 0"><strong>Order #${order.id}</strong> · <strong>${order.status}</strong><br>${order.items.map(item => `${item.emoji} ${item.name} × ${item.quantity}`).join(', ')}<br><span style="color:#c0392b">Total: ₱${Number(order.total).toFixed(2)}</span></div>`).join('');
+}
+refreshMyOrders();
+setInterval(refreshMyOrders, 15000);
 loadMenu();
